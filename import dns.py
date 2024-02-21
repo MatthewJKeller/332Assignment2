@@ -16,10 +16,11 @@ def dnsQuery(name, type, root_servers):
         try:
             response = dns.query.udp(query, server)
             print("got it! " + response)
+            break
         except:
             print("Trying " + server + " for " + name + " failed") 
             pass
         
-        
+
 if __name__ == "__main__":
     main()
