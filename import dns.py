@@ -12,21 +12,24 @@ def main():
     dnsQuery('stereogum.com', root_servers)
   
   
-def dnsQuery(name, root_servers):
+def dnsQuery(name, root_servers)->bool:
     """ Gets the IP Address for a given URL using the given nameservers"""
     query = dns.message.make_query(name, dns.rdatatype.A)   # makes a DNS query for the given URL, type=A
 
-    for server in root_servers:                             # using the given name servers, try to obtain a response
-        print("Asking " + server + " about " + name)
-        response = dns.query.tcp(query, server)             # grab the response for the nameserver
+    for i in range(len(root_servers)):                             # using the given name servers, try to obtain a response
+        print("Asking " + root_servers[i] + " about " + name)
+        response = dns.query.tcp(query, root_servers[i])             # grab the response for the nameserver
         if response.answer != []:
             for answer in response.answer:
                 for item in answer.items:
                     if item.address != None:
                         print("Got It! " + item.address)
-                        return                                  # return the first IP address found
-        elif response.additional != []:
-            # get the IP address of the next server to go to
+                        return True                                 # return the first IP address found
+        elif response.additional != []: # get the IP address of the next server to go to
+            lst = []
+            lst.append(str(response.additional[0][0]))
+            if dnsQuery(name, lst):
+                return True
 
 if __name__ == "__main__":
     main()
