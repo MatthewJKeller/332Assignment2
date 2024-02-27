@@ -13,7 +13,11 @@ def dnsQuery(name: str, root_servers: list, jumps: int):
     """ Gets the IP Address for a given URL using the given nameservers"""
     for i in range(len(root_servers)):                             # using the given name servers, try to obtain a response
         query = dns.message.make_query(name, dns.rdatatype.A)      # makes a DNS query for the given URL, type=A
-        print('Asking ' + root_servers[i] + ' about ' + name)
+        if jumps == 0:
+            rootString = 'root server '
+        else:
+            rootString = ''
+        print('Asking ' + rootString + root_servers[i] + ' about ' + name)
         response = dns.query.tcp(query, root_servers[i])           # grab the response for the nameserver
         if response.answer != []:                                  # get the IP address
             if str(response.answer[0]).find(' IN A ') != -1:
@@ -32,6 +36,11 @@ def dnsQuery(name: str, root_servers: list, jumps: int):
                 name = result
                 if jumps != 0:                                     # return name if you are still in a recursive call
                     return name
+        elif response.authority != []:                            # get the IP address of the next server to go to and do the query on it recursively
+            name = str(response.authority[0][0])[:-1]
+            if jumps != 0:
+                return name
+            
 
 if __name__ == "__main__":
     main()
