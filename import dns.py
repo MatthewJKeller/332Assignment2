@@ -22,7 +22,7 @@ def dnsQuery(name: str, root_servers: list, jumps: int):
             elif str(response.answer[0]).find(' IN CNAME ') != -1: # get the CNAME if there was not an IP address
                 name = str(response.answer[0][0])[:-1]
                 return name
-        elif response.additional != []:                            # get the IP address of the next server to go to
+        elif response.additional != []:                            # get the IP address of the next server to go to and do the query on it recursively
             lst = []
             lst.append(str(response.additional[0][0]))
             result = dnsQuery(name, lst, jumps+1)
