@@ -2,11 +2,11 @@ import dns.message
 import dns.query
 
 
-"""Domains tested for debugging: """
+"""Domains tested for debugging: stereogum.com, static.stereogum.com, google.com"""
 
 def main():
     root_servers = ['198.41.0.4', '170.247.170.2', '192.33.4.12', '199.7.91.13', '192.203.230.10','192.5.5.241', '192.112.36.4', '198.97.190.53', '192.36.148.17', '192.58.128.30', '193.0.14.129', '199.7.83.42', '202.12.27.33']
-    dnsQuery('static.stereogum.com', root_servers, 0)
+    dnsQuery('google.com', root_servers, 0)
   
 def dnsQuery(name: str, root_servers: list, jumps: int):
     """ Gets the IP Address for a given URL using the given nameservers"""
@@ -27,7 +27,10 @@ def dnsQuery(name: str, root_servers: list, jumps: int):
                 return name
         elif response.additional != []:                            # get the IP address of the next server to go to and do the query on it recursively
             lst = []
-            lst.append(str(response.additional[0][0]))
+            if str(response.additional[0][0]).find(':') != -1:     # do not use the IPv6 if given at [0][0], grab the IPv4
+                lst.append(str(response.additional[1][0]))
+            else:
+                lst.append(str(response.additional[0][0]))
             result = dnsQuery(name, lst, jumps+1)
             if result == True:                                     # if you got the actual IP address from one of the recursive calls, return true                
                 return True
