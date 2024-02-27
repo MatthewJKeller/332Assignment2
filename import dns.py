@@ -36,7 +36,7 @@ def dnsQuery(name: str, root_servers: list, jumps: int):
                 name = result
                 if jumps != 0:                                     # return name if you are still in a recursive call
                     return name
-        elif response.authority != []:                            # get the IP address of the next server to go to and do the query on it recursively
+        elif response.authority != []:                            # get the CNAME, if in recursive call, return it, if not, set name to CNAME
             name = str(response.authority[0][0])[:-1]
             if jumps != 0:
                 return name
