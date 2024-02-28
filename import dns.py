@@ -2,11 +2,11 @@ import dns.message
 import dns.query
 
 
-"""Domains tested for debugging: stereogum.com, static.stereogum.com, google.com"""
+"""Domains tested for debugging:gamefaqs.gamespot.com, stereogum.com, static.stereogum.com, google.com, facebook.com, youtube.com, wikipedia.org, amazon.com, reddit.com, instagram.com, yahoo.com, microsoft.com, bbc.com, wired.com, finance.yahoo.com, usa.gov, gov.uk, europa.eu, twitch.tv"""
 
 def main():
     root_servers = ['198.41.0.4', '170.247.170.2', '192.33.4.12', '199.7.91.13', '192.203.230.10','192.5.5.241', '192.112.36.4', '198.97.190.53', '192.36.148.17', '192.58.128.30', '193.0.14.129', '199.7.83.42', '202.12.27.33']
-    dnsQuery('google.com', root_servers, 0)
+    dnsQuery('stereogum.com', root_servers, 0)
   
 def dnsQuery(name: str, root_servers: list, jumps: int):
     """ Gets the IP Address for a given URL using the given nameservers"""
