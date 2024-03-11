@@ -1,6 +1,6 @@
+# Josh Berger and Matt Keller
 import dns.message
 import dns.query
-
 
 """Domains tested for debugging:gamefaqs.gamespot.com, stereogum.com, static.stereogum.com, google.com, facebook.com, youtube.com, wikipedia.org, amazon.com, reddit.com, instagram.com, yahoo.com, microsoft.com, bbc.com, wired.com, finance.yahoo.com, usa.gov, gov.uk, europa.eu, twitch.tv"""
 
