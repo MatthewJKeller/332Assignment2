@@ -6,7 +6,7 @@ import dns.query
 
 def main():
     root_servers = ['198.41.0.4', '170.247.170.2', '192.33.4.12', '199.7.91.13', '192.203.230.10','192.5.5.241', '192.112.36.4', '198.97.190.53', '192.36.148.17', '192.58.128.30', '193.0.14.129', '199.7.83.42', '202.12.27.33']
-    dnsQuery('jisho.org', root_servers, 0, 'jisho.org')
+    dnsQuery('static.stereogum.com', root_servers, 0, 'static.stereogum.com')
   
 def dnsQuery(name: str, root_servers: list, jumps: int, initialName: str):
     """ Gets the IP Address for a given URL using the given nameservers"""
@@ -23,7 +23,13 @@ def dnsQuery(name: str, root_servers: list, jumps: int, initialName: str):
                 if name != initialName:
                     lst = []
                     lst.append(str(response.answer[0][0]))
-                    return dnsQuery(initialName, lst, jumps+1, initialName)
+                    result= dnsQuery(initialName, lst, jumps+1, initialName)
+                    if result == True:                                     # if you got the actual IP address from one of the recursive calls, return true                
+                        return result
+                    elif result != None:                                   # if you got the CNAME from one of the recursive calls, set name to the CNAME
+                        name = result
+                        if jumps != 0:                                     # return name if you are still in a recursive call
+                            return name
                 else:
                     print('Got It! ' + str(response.answer[0][0]))
                     return True  
